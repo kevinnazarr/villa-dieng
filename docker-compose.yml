@@ -1,23 +1,77 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
     container_name: villa_dieng_postgres
     environment:
-      POSTGRES_DB: db_villa_dieng
-      POSTGRES_USER: kevinnazar
-      POSTGRES_PASSWORD: kevinnazar
+      POSTGRES_DB: ${POSTGRES_DB:-db_villa_dieng}
+      POSTGRES_USER: ${POSTGRES_USER:-villa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-villa_dev_password}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init-extensions.sql:/docker-entrypoint-initdb.d/01-init-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-villa} -d ${POSTGRES_DB:-db_villa_dieng}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     container_name: villa_dieng_redis
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6380}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: villa_dieng_backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: http://localhost:${APP_PORT:-8001}
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: ${POSTGRES_DB:-db_villa_dieng}
+      DB_USERNAME: ${POSTGRES_USER:-villa}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-villa_dev_password}
+      REDIS_CLIENT: phpredis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_STORE: redis
+      QUEUE_CONNECTION: redis
+      SESSION_DRIVER: redis
+    ports:
+      - "${APP_PORT:-8001}:8000"
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: villa_dieng_frontend
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: http://localhost:${APP_PORT:-8001}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
 
 volumes:
   pgdata:
