@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\BookingConflictException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -24,10 +25,18 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         // Consistent API error envelope. Validation stays distinguishable
-        // via `errors`. Future domain conflicts map to 409 here.
+        // via `errors`. Domain double-booking conflicts map to 409 here.
         $exceptions->render(function (Throwable $e, Request $request) {
             if (! $request->is('api/*') && ! $request->expectsJson()) {
                 return null;
+            }
+
+            if ($e instanceof BookingConflictException) {
+                return response()->json(['message' => 'BOOKING_CONFLICT'], 409);
+            }
+
+            if (BookingConflictException::isExclusionViolation($e)) {
+                return response()->json(['message' => 'BOOKING_CONFLICT'], 409);
             }
 
             if ($e instanceof ValidationException) {
