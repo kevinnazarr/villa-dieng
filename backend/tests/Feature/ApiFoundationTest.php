@@ -46,8 +46,9 @@ class ApiFoundationTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create());
 
+        // /me returns a UserResource envelope since LOG-005.
         $this->getJson('/api/v1/me')->assertOk()
-            ->assertJsonStructure(['id', 'email']);
+            ->assertJsonStructure(['data' => ['id', 'email']]);
     }
 
     public function test_user_id_is_uuid(): void
