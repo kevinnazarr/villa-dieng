@@ -1,23 +1,89 @@
-version: '3.8'
+name: villa-dieng
 
 services:
   postgres:
     image: postgres:15-alpine
     container_name: villa_dieng_postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: db_villa_dieng
-      POSTGRES_USER: kevinnazar
-      POSTGRES_PASSWORD: kevinnazar
+      POSTGRES_DB: ${POSTGRES_DB:-db_villa_dieng}
+      POSTGRES_USER: ${POSTGRES_USER:-villa_dieng}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-villa_dieng_dev}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init-extensions.sql:/docker-entrypoint-initdb.d/01-extensions.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     container_name: villa_dieng_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
     ports:
-      - "6379:6379"
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: villa_dieng_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    volumes:
+      - ./backend:/app
+      - /app/vendor
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:8000"
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_DATABASE: ${POSTGRES_DB:-db_villa_dieng}
+      DB_USERNAME: ${POSTGRES_USER:-villa_dieng}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-villa_dieng_dev}
+      REDIS_CLIENT: phpredis
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      SESSION_DRIVER: database
+    healthcheck:
+      test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\",8000)?0:1);'"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  frontend:
+    build: ./frontend
+    container_name: villa_dieng_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
 
 volumes:
   pgdata:
+  redisdata:
