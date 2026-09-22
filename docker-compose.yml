@@ -62,9 +62,9 @@ services:
       REDIS_CLIENT: phpredis
       REDIS_HOST: redis
       REDIS_PORT: "6379"
-      CACHE_STORE: database
+      CACHE_STORE: file
       QUEUE_CONNECTION: database
-      SESSION_DRIVER: database
+      SESSION_DRIVER: file
     healthcheck:
       test: ["CMD-SHELL", "php -r 'exit(@fsockopen(\"127.0.0.1\",8000)?0:1);'"]
       interval: 10s
