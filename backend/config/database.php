@@ -99,6 +99,20 @@ return [
             'sslmode' => env('DB_SSLMODE', 'prefer'),
         ],
 
+        'pgsql_testing' => [
+            'driver' => 'pgsql',
+            'host' => env('PG_TEST_HOST', env('DB_HOST', '127.0.0.1')),
+            'port' => env('PG_TEST_PORT', env('DB_PORT', '5432')),
+            'database' => env('PG_TEST_DATABASE', 'villa_dieng_test'),
+            'username' => env('PG_TEST_USERNAME', env('DB_USERNAME', 'root')),
+            'password' => env('PG_TEST_PASSWORD', env('DB_PASSWORD', '')),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+        ],
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

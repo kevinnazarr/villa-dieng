@@ -24,5 +24,3 @@
 - [ ] API changes documented
 
 ## Notes
-
-<!-- Known limitations, follow-up work, or important decisions. -->
