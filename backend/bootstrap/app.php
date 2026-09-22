@@ -1,11 +1,14 @@
 <?php
 
 use App\Exceptions\BookingConflictException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Validation\ValidationException;
 
@@ -17,7 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias(['admin' => \App\Http\Middleware\EnsureAdmin::class]);
+
+        // Named limiters on Redis explicitly — CACHE_STORE stays file.
+        // Limiter definitions live in AppServiceProvider::boot (facades
+        // are not available inside this closure).
+        $middleware->throttleWithRedis();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
@@ -52,6 +60,29 @@ return Application::configure(basePath: dirname(__DIR__))
 
             if ($e instanceof AuthenticationException) {
                 return response()->json(['message' => 'Unauthenticated.'], 401);
+            }
+
+            if ($e instanceof AuthorizationException) {
+                return response()->json(['message' => 'Forbidden.'], 403);
+            }
+
+            if ($e instanceof InvalidArgumentException) {
+                return response()->json(['message' => $e->getMessage()], 422);
+            }
+
+            // Sanitized fallback: preserve HTTP status, never leak internals.
+            // Exact HttpException (e.g. abort(403, 'Forbidden.')) carries a
+            // safe explicit message; anything else stays generic.
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                return response()->json(['message' => $e->getMessage() ?: 'Server Error.'], $e->getStatusCode());
+            }
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                return response()->json(['message' => 'Server Error.'], $e->getStatusCode());
+            }
+
+            if ($e instanceof \Throwable) {
+                return response()->json(['message' => 'Server Error.'], 500);
             }
 
             return null;
