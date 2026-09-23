@@ -1,10 +1,12 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLocale } from '../i18n/LocaleContext';
 import { isApiError } from '../lib/errors';
 
 export function Register() {
   const { register } = useAuth();
+  const { t } = useLocale();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -60,11 +62,11 @@ export function Register() {
     <main className="min-h-svh bg-neutral-50 font-sans text-neutral-950 antialiased">
       <div className="mx-auto max-w-md px-6 py-24">
         <h1 className="font-display text-4xl text-forest-800">
-          Create account
+          {t('auth.createAccount')}
         </h1>
         <form onSubmit={handleSubmit} noValidate className="mt-8">
           <div>
-            <label htmlFor="register-name">Full name</label>
+            <label htmlFor="register-name">{t('auth.fullName')}</label>
             <input
               id="register-name"
               type="text"
@@ -84,7 +86,7 @@ export function Register() {
             ) : null}
           </div>
           <div className="mt-4">
-            <label htmlFor="register-email">Email</label>
+            <label htmlFor="register-email">{t('auth.email')}</label>
             <input
               id="register-email"
               type="email"
@@ -104,7 +106,7 @@ export function Register() {
             ) : null}
           </div>
           <div className="mt-4">
-            <label htmlFor="register-password">Password</label>
+            <label htmlFor="register-password">{t('auth.password')}</label>
             <input
               id="register-password"
               type="password"
@@ -129,7 +131,7 @@ export function Register() {
           </div>
           <div className="mt-4">
             <label htmlFor="register-password-confirmation">
-              Confirm password
+              {t('auth.confirmPassword')}
             </label>
             <input
               id="register-password-confirmation"
@@ -152,11 +154,11 @@ export function Register() {
             aria-busy={submitting}
             className="mt-6 w-full rounded-lg bg-forest-700 px-5 py-3 text-sm text-white disabled:opacity-60"
           >
-            {submitting ? 'Creating account…' : 'Create account'}
+            {submitting ? t('auth.creatingAccount') : t('auth.createAccount')}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-neutral-700">
-          Already have an account? <Link to="/login">Sign in</Link>
+          {t('auth.haveAccount')} <Link to="/login">{t('auth.signIn')}</Link>
         </p>
       </div>
     </main>

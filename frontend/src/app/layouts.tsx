@@ -1,5 +1,7 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLocale } from '../i18n/LocaleContext';
+import { LocaleSwitcher } from '../components/LocaleSwitcher';
 
 /**
  * Structural shells only — no final nav/header/footer design yet.
@@ -9,16 +11,18 @@ import { useAuth } from '../auth/AuthContext';
  */
 
 export function PublicLayout() {
+  const { t } = useLocale();
   return (
     <>
       <header>
-        <nav aria-label="Main navigation">
-          <Link to="/">Cabin Villa Dieng</Link>
+        <nav aria-label={t('nav.main')}>
+          <Link to="/">{t('nav.brand')}</Link>
         </nav>
+        <LocaleSwitcher />
       </header>
       <Outlet />
       <footer>
-        <p>Cabin Villa Dieng</p>
+        <p>{t('footer.brand')}</p>
       </footer>
     </>
   );
@@ -26,6 +30,7 @@ export function PublicLayout() {
 
 function SignOutButton() {
   const { user, logout } = useAuth();
+  const { t } = useLocale();
   const navigate = useNavigate();
   async function handleSignOut() {
     await logout();
@@ -35,19 +40,21 @@ function SignOutButton() {
     <p>
       {user ? <span>{user.name} </span> : null}
       <button type="button" onClick={() => void handleSignOut()}>
-        Sign out
+        {t('auth.signOut')}
       </button>
     </p>
   );
 }
 
 export function CustomerLayout() {
+  const { t } = useLocale();
   return (
     <>
       <header>
-        <nav aria-label="Account navigation">
-          <Link to="/">Cabin Villa Dieng</Link>
+        <nav aria-label={t('nav.account')}>
+          <Link to="/">{t('nav.brand')}</Link>
         </nav>
+        <LocaleSwitcher />
         <SignOutButton />
       </header>
       <Outlet />
@@ -56,12 +63,14 @@ export function CustomerLayout() {
 }
 
 export function AdminLayout() {
+  const { t } = useLocale();
   return (
     <>
       <header>
-        <nav aria-label="Admin navigation">
-          <Link to="/">Cabin Villa Dieng</Link>
+        <nav aria-label={t('nav.admin')}>
+          <Link to="/">{t('nav.brand')}</Link>
         </nav>
+        <LocaleSwitcher />
         <SignOutButton />
       </header>
       <Outlet />
