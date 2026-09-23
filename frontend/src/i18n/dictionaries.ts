@@ -45,7 +45,6 @@ const en = {
   'placeholder.body':
     'This page is part of the application. Its feature is not implemented yet.',
 
-  'page.cabinDetail': 'Cabin Detail',
   'page.booking': 'Booking',
   'page.checkout': 'Checkout',
   'page.payment': 'Payment',
@@ -85,6 +84,17 @@ const en = {
   'home.cabinsErrorBody':
     'Property information is shown below. Please try loading the cabins again.',
   'home.cabinsEmpty': 'No cabins are listed for this property yet.',
+
+  'cabin.gallery': 'Cabin photos',
+  'cabin.amenities': 'Amenities',
+  'cabin.inProperty': 'Part of {property}',
+  'cabin.breadcrumb': 'Breadcrumb',
+  'cabin.notFoundTitle': 'Cabin not found',
+  'cabin.notFoundBody':
+    'The cabin you are looking for does not exist or is no longer available.',
+  'cabin.errorTitle': 'We could not load this cabin',
+  'cabin.errorBody':
+    'Something went wrong while loading. Please try again.',
 } as const;
 
 export type TranslationKey = keyof typeof en;
@@ -129,7 +139,6 @@ const id: Record<TranslationKey, string> = {
   'placeholder.body':
     'Halaman ini adalah bagian dari aplikasi. Fiturnya belum diimplementasikan.',
 
-  'page.cabinDetail': 'Detail Kabin',
   'page.booking': 'Pemesanan',
   'page.checkout': 'Checkout',
   'page.payment': 'Pembayaran',
@@ -168,6 +177,16 @@ const id: Record<TranslationKey, string> = {
   'home.cabinsErrorBody':
     'Informasi properti ditampilkan di bawah. Silakan coba muat kabin lagi.',
   'home.cabinsEmpty': 'Belum ada kabin yang terdaftar untuk properti ini.',
+
+  'cabin.gallery': 'Foto kabin',
+  'cabin.amenities': 'Fasilitas',
+  'cabin.inProperty': 'Bagian dari {property}',
+  'cabin.breadcrumb': 'Navigasi halaman',
+  'cabin.notFoundTitle': 'Kabin tidak ditemukan',
+  'cabin.notFoundBody':
+    'Kabin yang Anda cari tidak ada atau sudah tidak tersedia.',
+  'cabin.errorTitle': 'Kami tidak dapat memuat kabin ini',
+  'cabin.errorBody': 'Terjadi kesalahan saat memuat. Silakan coba lagi.',
 };
 
 export const dictionaries: Record<'id' | 'en', Record<TranslationKey, string>> = {

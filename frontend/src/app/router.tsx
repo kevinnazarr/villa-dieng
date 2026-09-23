@@ -2,16 +2,13 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RequireAdmin, RequireAuth } from './guards';
 import { AdminLayout, CustomerLayout, PublicLayout } from './layouts';
 import Home from '../pages/Home';
+import { CabinDetail } from '../pages/CabinDetail';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Forbidden } from '../pages/Forbidden';
 import { NotFound } from '../pages/NotFound';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
 
-/**
- * Centralized route table. Feature routes render an honest placeholder
- * until their commits land — no fake booking, payment, or admin data.
- */
 export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
@@ -19,7 +16,7 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       {
         path: 'cabin/:propertySlug/:cabinSlug',
-        element: <PlaceholderPage titleKey="page.cabinDetail" />,
+        element: <CabinDetail />,
       },
       { path: 'booking', element: <PlaceholderPage titleKey="page.booking" /> },
       { path: 'checkout', element: <PlaceholderPage titleKey="page.checkout" /> },
