@@ -65,6 +65,26 @@ const en = {
   'page.availability': 'Availability',
   'page.customers': 'Customers',
   'page.customerDetail': 'Customer Detail',
+
+  'home.eyebrow': 'Exclusive cabin retreat · Dieng highlands',
+  'home.checkAvailability': 'Check availability',
+  'home.introTitle': 'The property',
+  'home.cabinsTitle': 'Cabins',
+  'home.highlightsTitle': 'Highlights',
+  'home.finalCtaTitle': 'Your cabin in the highlands is waiting.',
+  'home.perNight': '/night',
+  'home.capacity': 'Adults {adults} · Children {children}',
+  'home.imageFallback': 'Photo of {name}',
+  'home.emptyTitle': 'No property is listed yet',
+  'home.emptyBody':
+    'There is currently no active property to show. Please check back later.',
+  'home.errorTitle': 'We could not load the homepage',
+  'home.errorBody':
+    'Something went wrong while loading. Please try again.',
+  'home.cabinsErrorTitle': 'We could not load the cabins',
+  'home.cabinsErrorBody':
+    'Property information is shown below. Please try loading the cabins again.',
+  'home.cabinsEmpty': 'No cabins are listed for this property yet.',
 } as const;
 
 export type TranslationKey = keyof typeof en;
@@ -129,6 +149,25 @@ const id: Record<TranslationKey, string> = {
   'page.availability': 'Ketersediaan',
   'page.customers': 'Pelanggan',
   'page.customerDetail': 'Detail Pelanggan',
+
+  'home.eyebrow': 'Retret kabin eksklusif · Dataran tinggi Dieng',
+  'home.checkAvailability': 'Cek ketersediaan',
+  'home.introTitle': 'Tentang properti',
+  'home.cabinsTitle': 'Kabin',
+  'home.highlightsTitle': 'Sorotan',
+  'home.finalCtaTitle': 'Kabin Anda di dataran tinggi menanti.',
+  'home.perNight': '/malam',
+  'home.capacity': 'Dewasa {adults} · Anak {children}',
+  'home.imageFallback': 'Foto {name}',
+  'home.emptyTitle': 'Belum ada properti yang terdaftar',
+  'home.emptyBody':
+    'Saat ini belum ada properti aktif untuk ditampilkan. Silakan kembali lagi nanti.',
+  'home.errorTitle': 'Kami tidak dapat memuat beranda',
+  'home.errorBody': 'Terjadi kesalahan saat memuat. Silakan coba lagi.',
+  'home.cabinsErrorTitle': 'Kami tidak dapat memuat kabin',
+  'home.cabinsErrorBody':
+    'Informasi properti ditampilkan di bawah. Silakan coba muat kabin lagi.',
+  'home.cabinsEmpty': 'Belum ada kabin yang terdaftar untuk properti ini.',
 };
 
 export const dictionaries: Record<'id' | 'en', Record<TranslationKey, string>> = {

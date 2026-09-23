@@ -18,7 +18,7 @@ import {
 interface LocaleContextValue {
   locale: Locale;
   setLocale: (locale: Locale) => void;
-  t: (key: TranslationKey) => string;
+  t: (key: TranslationKey, vars?: Record<string, string | number>) => string;
 }
 
 const LocaleContext = createContext<LocaleContextValue | null>(null);
@@ -59,9 +59,17 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     applyDocumentLang(next);
   }, []);
 
+  // Minimal `{name}` substitution for scoped client copy only. No
+  // pluralization, no formatting — server content stays verbatim.
   const t = useCallback(
-    (key: TranslationKey): string =>
-      dictionaries[locale][key] ?? dictionaries.en[key] ?? key,
+    (key: TranslationKey, vars?: Record<string, string | number>): string => {
+      const template = dictionaries[locale][key] ?? dictionaries.en[key] ?? key;
+      if (!vars) return template;
+      return template.replace(/\{(\w+)\}/g, (match, name: string) => {
+        const value = vars[name];
+        return value === undefined ? match : String(value);
+      });
+    },
     [locale],
   );
 
