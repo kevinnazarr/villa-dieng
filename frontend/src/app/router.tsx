@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RequireAdmin, RequireAuth } from './guards';
 import { AdminLayout, CustomerLayout, PublicLayout } from './layouts';
 import Home from '../pages/Home';
+import { Login } from '../pages/Login';
+import { Register } from '../pages/Register';
+import { Forbidden } from '../pages/Forbidden';
 import { NotFound } from '../pages/NotFound';
 import { PlaceholderPage } from '../pages/PlaceholderPage';
 
@@ -36,8 +39,9 @@ export const router = createBrowserRouter([
         element: <PlaceholderPage title="House Rules" />,
       },
       { path: 'contact', element: <PlaceholderPage title="Contact" /> },
-      { path: 'login', element: <PlaceholderPage title="Login" /> },
-      { path: 'register', element: <PlaceholderPage title="Register" /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'forbidden', element: <Forbidden /> },
     ],
   },
   {

@@ -1,8 +1,11 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 /**
  * Structural shells only — no final nav/header/footer design yet.
- * Each layout renders its section landmark and the child route outlet.
+ * Customer/admin layouts show a minimal identity affordance (name +
+ * sign-out) wired to AuthContext. Each layout renders its section
+ * landmark and the child route outlet.
  */
 
 export function PublicLayout() {
@@ -21,6 +24,23 @@ export function PublicLayout() {
   );
 }
 
+function SignOutButton() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  async function handleSignOut() {
+    await logout();
+    navigate('/', { replace: true });
+  }
+  return (
+    <p>
+      {user ? <span>{user.name} </span> : null}
+      <button type="button" onClick={() => void handleSignOut()}>
+        Sign out
+      </button>
+    </p>
+  );
+}
+
 export function CustomerLayout() {
   return (
     <>
@@ -28,6 +48,7 @@ export function CustomerLayout() {
         <nav aria-label="Account navigation">
           <Link to="/">Cabin Villa Dieng</Link>
         </nav>
+        <SignOutButton />
       </header>
       <Outlet />
     </>
@@ -41,6 +62,7 @@ export function AdminLayout() {
         <nav aria-label="Admin navigation">
           <Link to="/">Cabin Villa Dieng</Link>
         </nav>
+        <SignOutButton />
       </header>
       <Outlet />
     </>
