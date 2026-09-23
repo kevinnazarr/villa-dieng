@@ -170,7 +170,7 @@ export function CabinDetail() {
         ) : null}
         <p className="mt-8">
           <Link
-            to="/booking"
+            to={`/booking?property=${encodeURIComponent(propertySlug ?? '')}&cabin=${encodeURIComponent(cabin.slug)}`}
             className="rounded-lg bg-accent-600 px-6 py-3 text-sm text-white"
           >
             {t('home.checkAvailability')}

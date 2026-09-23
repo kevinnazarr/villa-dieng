@@ -3,6 +3,7 @@ import { RequireAdmin, RequireAuth } from './guards';
 import { AdminLayout, CustomerLayout, PublicLayout } from './layouts';
 import Home from '../pages/Home';
 import { CabinDetail } from '../pages/CabinDetail';
+import { Booking } from '../pages/Booking';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
 import { Forbidden } from '../pages/Forbidden';
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
         path: 'cabin/:propertySlug/:cabinSlug',
         element: <CabinDetail />,
       },
-      { path: 'booking', element: <PlaceholderPage titleKey="page.booking" /> },
+      { path: 'booking', element: <Booking /> },
       { path: 'checkout', element: <PlaceholderPage titleKey="page.checkout" /> },
       { path: 'payment', element: <PlaceholderPage titleKey="page.payment" /> },
       {
