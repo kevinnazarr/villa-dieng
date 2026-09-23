@@ -1,5 +1,10 @@
 import { apiGet } from './api';
-import type { Cabin, CollectionEnvelope, Property } from '../types/api';
+import type {
+  Cabin,
+  CollectionEnvelope,
+  DataEnvelope,
+  Property,
+} from '../types/api';
 
 /**
  * Public catalog reads. Thin wrappers around the shared client — no caching,
@@ -14,5 +19,14 @@ export function getPropertyCabins(
 ): Promise<CollectionEnvelope<Cabin>> {
   return apiGet<CollectionEnvelope<Cabin>>(
     `/properties/${encodeURIComponent(propertySlug)}/cabins`,
+  );
+}
+
+export function getCabinDetail(
+  propertySlug: string,
+  cabinSlug: string,
+): Promise<DataEnvelope<Cabin>> {
+  return apiGet<DataEnvelope<Cabin>>(
+    `/properties/${encodeURIComponent(propertySlug)}/cabins/${encodeURIComponent(cabinSlug)}`,
   );
 }

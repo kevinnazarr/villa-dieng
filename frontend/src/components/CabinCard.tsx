@@ -1,21 +1,12 @@
 import { Link } from 'react-router-dom';
 import { useLocale } from '../i18n/LocaleContext';
 import { formatCurrency } from '../i18n/format';
-import type { Cabin, CabinImage } from '../types/api';
+import { isUsableImageUrl, pickPrimaryImage } from '../lib/images';
+import type { Cabin } from '../types/api';
 
 interface CabinCardProps {
   cabin: Cabin;
   propertySlug: string;
-}
-
-function isUsableImageUrl(path: string): boolean {
-  return path.startsWith('https://') || path.startsWith('http://') || path.startsWith('/');
-}
-
-function pickPrimaryImage(images: CabinImage[] | undefined): CabinImage | null {
-  if (!images || images.length === 0) return null;
-  const sorted = [...images].sort((a, b) => a.sort_order - b.sort_order);
-  return sorted.find((image) => image.is_primary) ?? sorted[0] ?? null;
 }
 
 /**
