@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLocale } from '../i18n/LocaleContext';
 import { isApiError } from '../lib/errors';
 
 function safeRedirect(from: unknown): string {
@@ -12,6 +13,7 @@ function safeRedirect(from: unknown): string {
 
 export function Login() {
   const { login } = useAuth();
+  const { t } = useLocale();
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState('');
@@ -58,10 +60,12 @@ export function Login() {
   return (
     <main className="min-h-svh bg-neutral-50 font-sans text-neutral-950 antialiased">
       <div className="mx-auto max-w-md px-6 py-24">
-        <h1 className="font-display text-4xl text-forest-800">Sign in</h1>
+        <h1 className="font-display text-4xl text-forest-800">
+          {t('auth.signIn')}
+        </h1>
         <form onSubmit={handleSubmit} noValidate className="mt-8">
           <div>
-            <label htmlFor="login-email">Email</label>
+            <label htmlFor="login-email">{t('auth.email')}</label>
             <input
               id="login-email"
               type="email"
@@ -74,7 +78,7 @@ export function Login() {
             />
           </div>
           <div className="mt-4">
-            <label htmlFor="login-password">Password</label>
+            <label htmlFor="login-password">{t('auth.password')}</label>
             <input
               id="login-password"
               type="password"
@@ -97,11 +101,11 @@ export function Login() {
             aria-busy={submitting}
             className="mt-6 w-full rounded-lg bg-forest-700 px-5 py-3 text-sm text-white disabled:opacity-60"
           >
-            {submitting ? 'Signing in…' : 'Sign in'}
+            {submitting ? t('auth.signingIn') : t('auth.signIn')}
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-neutral-700">
-          No account yet? <Link to="/register">Create one</Link>
+          {t('auth.noAccount')} <Link to="/register">{t('auth.createOne')}</Link>
         </p>
       </div>
     </main>

@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
+import { useLocale } from '../i18n/LocaleContext';
 
 /**
  * Auth-aware guards. Loading and transient-error states never redirect —
@@ -8,23 +9,22 @@ import { useAuth } from '../auth/AuthContext';
  */
 
 function AuthLoading() {
+  const { t } = useLocale();
   return (
     <main aria-busy="true" aria-live="polite">
-      <p>Loading…</p>
+      <p>{t('common.loading')}</p>
     </main>
   );
 }
 
 function AuthErrorState() {
   const { error, refresh } = useAuth();
+  const { t } = useLocale();
   return (
     <main>
-      <p role="alert">
-        {error?.message ??
-          'We could not reach the server. Your session was kept.'}
-      </p>
+      <p role="alert">{error?.message ?? t('common.authErrorFallback')}</p>
       <button type="button" onClick={() => void refresh()}>
-        Try again
+        {t('common.retry')}
       </button>
     </main>
   );

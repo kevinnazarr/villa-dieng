@@ -19,26 +19,26 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       {
         path: 'cabin/:propertySlug/:cabinSlug',
-        element: <PlaceholderPage title="Cabin Detail" />,
+        element: <PlaceholderPage titleKey="page.cabinDetail" />,
       },
-      { path: 'booking', element: <PlaceholderPage title="Booking" /> },
-      { path: 'checkout', element: <PlaceholderPage title="Checkout" /> },
-      { path: 'payment', element: <PlaceholderPage title="Payment" /> },
+      { path: 'booking', element: <PlaceholderPage titleKey="page.booking" /> },
+      { path: 'checkout', element: <PlaceholderPage titleKey="page.checkout" /> },
+      { path: 'payment', element: <PlaceholderPage titleKey="page.payment" /> },
       {
         path: 'booking/success',
-        element: <PlaceholderPage title="Booking Success" />,
+        element: <PlaceholderPage titleKey="page.bookingSuccess" />,
       },
       {
         path: 'booking/failed',
-        element: <PlaceholderPage title="Booking Failed" />,
+        element: <PlaceholderPage titleKey="page.bookingFailed" />,
       },
-      { path: 'faq', element: <PlaceholderPage title="FAQ" /> },
-      { path: 'location', element: <PlaceholderPage title="Location" /> },
+      { path: 'faq', element: <PlaceholderPage titleKey="page.faq" /> },
+      { path: 'location', element: <PlaceholderPage titleKey="page.location" /> },
       {
         path: 'house-rules',
-        element: <PlaceholderPage title="House Rules" />,
+        element: <PlaceholderPage titleKey="page.houseRules" />,
       },
-      { path: 'contact', element: <PlaceholderPage title="Contact" /> },
+      { path: 'contact', element: <PlaceholderPage titleKey="page.contact" /> },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <Register /> },
       { path: 'forbidden', element: <Forbidden /> },
@@ -51,18 +51,18 @@ export const router = createBrowserRouter([
       {
         element: <CustomerLayout />,
         children: [
-          { index: true, element: <PlaceholderPage title="Account" /> },
+          { index: true, element: <PlaceholderPage titleKey="page.account" /> },
           {
             path: 'bookings',
-            element: <PlaceholderPage title="My Bookings" />,
+            element: <PlaceholderPage titleKey="page.myBookings" />,
           },
           {
             path: 'bookings/:bookingCode',
-            element: <PlaceholderPage title="Booking Detail" />,
+            element: <PlaceholderPage titleKey="page.bookingDetail" />,
           },
           {
             path: 'profile',
-            element: <PlaceholderPage title="Profile" />,
+            element: <PlaceholderPage titleKey="page.profile" />,
           },
         ],
       },
@@ -75,26 +75,26 @@ export const router = createBrowserRouter([
       {
         element: <AdminLayout />,
         children: [
-          { index: true, element: <PlaceholderPage title="Admin Dashboard" /> },
+          { index: true, element: <PlaceholderPage titleKey="page.adminDashboard" /> },
           {
             path: 'reservations',
-            element: <PlaceholderPage title="Reservations" />,
+            element: <PlaceholderPage titleKey="page.reservations" />,
           },
           {
             path: 'reservations/:reservationId',
-            element: <PlaceholderPage title="Reservation Detail" />,
+            element: <PlaceholderPage titleKey="page.reservationDetail" />,
           },
           {
             path: 'availability',
-            element: <PlaceholderPage title="Availability" />,
+            element: <PlaceholderPage titleKey="page.availability" />,
           },
           {
             path: 'customers',
-            element: <PlaceholderPage title="Customers" />,
+            element: <PlaceholderPage titleKey="page.customers" />,
           },
           {
             path: 'customers/:userId',
-            element: <PlaceholderPage title="Customer Detail" />,
+            element: <PlaceholderPage titleKey="page.customerDetail" />,
           },
         ],
       },
